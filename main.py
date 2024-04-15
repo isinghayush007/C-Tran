@@ -19,6 +19,9 @@ print('Train Known: {}'.format(args.train_known_labels))
 print('Test Known:  {}'.format(args.test_known_labels))
 
 train_loader,valid_loader,test_loader = get_data(args)
+print('train_dataset len:', len(train_loader.dataset))
+print('valid_dataset len:', len(valid_loader.dataset))
+print('test_dataset len:', len(test_loader))
 
 if args.dataset == 'cub':
     model = CTranModelCub(args.num_labels,args.use_lmt,args.pos_emb,args.layers,args.heads,args.dropout,args.no_x_features)
