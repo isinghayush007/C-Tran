@@ -178,19 +178,40 @@ def get_data(args):
         test_dataset = CUBDataset(image_dir, test_list, testTransform,known_labels=args.test_known_labels,attr_group_dict=attr_group_dict,testing=True,n_groups=n_groups)
     
     elif dataset == 'odir':
-        odir_root = ''
+        odir_root = '/kaggle/working'
+
+        normTransform = transforms.Normalize(mean=[0.5], std=[0.5])
+
+        trainTransform = transforms.Compose([transforms.Resize((scale_size, scale_size)),
+                                        transforms.RandomHorizontalFlip(),
+                                        normTransform
+        ])
+
+        testTransform = transforms.Compose([transforms.Resize((scale_size, scale_size)),
+                                            normTransform
+        ])
+
         train_dataset = OdirDataset(
             split='train',
             data_file=os.path.join(odir_root, 'odir.npz'),
-            transform=trainTransform)
+            transform=trainTransform,
+            num_labels = args.num_labels,
+            known_labels = args.train_known_labels,
+            testing = False)
         valid_dataset = OdirDataset(
             split='val',
             data_file=os.path.join(odir_root, 'odir.npz'),
-            transform=testTransform)
+            transform=testTransform,
+            num_labels = args.num_labels,
+            known_labels = args.test_known_labels,
+            testing = True)
         test_dataset = OdirDataset(
             split='test',
             data_file=os.path.join(odir_root, 'odir.npz'),
-            transform=testTransform)
+            transform=testTransform,
+            num_labels = args.num_labels,
+            known_labels = args.test_known_labels,
+            testing = True)
 
         if train_dataset is not None:
             train_loader = DataLoader(train_dataset,

@@ -5,7 +5,7 @@ from pdb import set_trace as stop
 
 
 def get_args(parser,eval=False):
-    parser.add_argument('--dataroot', type=str, default='/kaggle/input/oia-odir')
+    parser.add_argument('--dataroot', type=str, default='/kaggle/input/oia-odir-5k/oia-odir')
     parser.add_argument('--dataset', type=str, choices=['coco', 'voc','coco1000','nus','vg','news','cub', 'odir'], default='odir')
     parser.add_argument('--workers', type=int, default=10)
     parser.add_argument('--results_dir', type=str, default='results/')

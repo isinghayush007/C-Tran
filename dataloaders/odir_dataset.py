@@ -10,11 +10,11 @@ from torchvision import transforms
 
 class OdirDataset(Dataset):
 
-    def __init__(self, split, data_file, transform=None):
+    def __init__(self, split, num_labels, data_file, transform=None, known_labels = 0, testing=False):
 
         self.split = split
         self.split_data = np.load(data_file, allow_pickle=True)
-        self.root = "/kaggle/input/oia-odir"
+        self.root = "/kaggle/input/oia-odir-5k/oia-odir"
 
         if self.split == 'train':
             self.imgs = self.split_data['train_images']
@@ -30,6 +30,9 @@ class OdirDataset(Dataset):
 
         self.transform = transform
         self.resizer = transforms.Resize((640, 640))
+        self.num_labels = num_labels
+        self.known_labels = known_labels
+        self.testing = testing
 
     def __len__(self):
         return self.imgs.shape[0]
@@ -38,6 +41,8 @@ class OdirDataset(Dataset):
 
         if torch.is_tensor(idx):
             idx = idx.tolist()
+
+        image_ID = self.imgs[idx]
 
         labels = self.labs[idx].astype(int)
         labels = torch.Tensor(labels)
@@ -52,14 +57,17 @@ class OdirDataset(Dataset):
         #     # image = image[:, :, 0]
         #     image = image[0]
 
-        image = image[0].unsqueeze(0)
+        # image = image[0].unsqueeze(0)
         # print(image.shape)
+
+        unk_mask_indices = get_unk_mask_indices(image,self.testing,self.num_labels,self.known_labels)
+        
+        mask = labels.clone()
+        mask.scatter_(0,torch.Tensor(unk_mask_indices).long() , -1)
 
         sample = {}
         sample['image'] = image
         sample['labels'] = labels
-
+        sample['mask'] = mask
+        sample['imageIDs'] = image_ID
         return sample
-
-
-
