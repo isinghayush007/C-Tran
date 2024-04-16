@@ -13,7 +13,7 @@ def get_args(parser,eval=False):
 
     # Optimization
     parser.add_argument('--optim', type=str, choices=['adam', 'sgd'], default='adam')
-    parser.add_argument('--lr', type=float, default=0.0002)
+    parser.add_argument('--lr', type=float, default=0.0001)
     parser.add_argument('--batch_size', type=int, default=8)
     parser.add_argument('--test_batch_size', type=int, default=-1)
     parser.add_argument('--grad_ac_steps', type=int, default=1)
@@ -25,8 +25,8 @@ def get_args(parser,eval=False):
     parser.add_argument('--loss_type', type=str, choices=['bce', 'mixed','class_ce','soft_margin'], default='bce')
     parser.add_argument('--scheduler_type', type=str, choices=['plateau', 'step'], default='plateau')
     parser.add_argument('--loss_labels', type=str, choices=['all', 'unk'], default='all')
-    parser.add_argument('--lr_decay', type=float, default=0)
-    parser.add_argument('--weight_decay', type=float, default=1e-4)
+    parser.add_argument('--lr_decay', type=float, default=0.1)
+    parser.add_argument('--weight_decay', type=float, default=0.1)
     parser.add_argument('--max_samples', type=int, default=-1)
     parser.add_argument('--max_batches', type=int, default=-1)
     parser.add_argument('--warmup_scheduler', action='store_true',help='')

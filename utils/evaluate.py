@@ -109,6 +109,7 @@ def compute_metrics(args,all_predictions,all_targets,all_masks,loss,loss_unk,ela
         print('OP:    {:0.1f}'.format(OP*100))
         print('OR:    {:0.1f}'.format(OR*100))
         print('OF1:   {:0.1f}'.format(OF1*100))
+        print('ACC:   {:0.1f}'.format(ACC*100))
         if args.dataset in ['coco','vg']:
             print('----')
             print('CP_t3: {:0.1f}'.format(CP_top3*100))
